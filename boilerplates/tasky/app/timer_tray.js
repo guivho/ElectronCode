@@ -3,9 +3,9 @@ const { app, Menu, Tray } = electron;
 
 class TimerTray extends Tray {
 
-	constructor(iconPath, mainWindow) {
+	constructor(iconPath, timerWindow) {
 		super(iconPath);
-		this.mainWindow = mainWindow
+		this.timerWindow = timerWindow
 		this.setToolTip('Timer App')
 		this.on('click', this.onClick.bind(this))
 		this.on('right-click', this.onRightClick.bind(this))
@@ -14,23 +14,23 @@ class TimerTray extends Tray {
 	onClick(event, bounds) {
 		const { x, y } = bounds;
 		// Window height and width
-		const { height, width } = this.mainWindow.getBounds();
-		if (this.mainWindow.isVisible()) {
-			this.mainWindow.hide()
+		const { height, width } = this.timerWindow.getBounds();
+		if (this.timerWindow.isVisible()) {
+			this.timerWindow.hide()
 		} else {
 			const yPos = process.platform === 'darwin' ? y : y - height
 			const xPos = Math.floor(x - width / 2)
-			this.mainWindow.setBounds({
+			this.timerWindow.setBounds({
 				x: xPos,
 				y: yPos,
 				height,
 				width,
 			});
-			this.mainWindow.show();
+			this.timerWindow.show();
 		}
 	}
 
-	onRightClick(event, bounds) {
+	onRightClick() {
 		const menuConfig = Menu.buildFromTemplate([
 			{
 				label: 'Quit',
