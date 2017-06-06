@@ -10,6 +10,8 @@ class TimerWindow extends BrowserWindow {
 			frame: false,
 			resizable: false,
 			show: false,
+			// NOTE: needed to avoid slowdown while in background
+			webPreferences: { backgroundThrottling: false },
 		});
 		debugger
 		this.loadURL(url)
