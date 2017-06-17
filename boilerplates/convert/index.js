@@ -15,7 +15,8 @@ app.on('ready', () => {
 })
 
 ipcMain.on('videos:added', (event, videos) => {
-	ffmpeg.ffprobre(videos[0].path, (err, metadata) => {
+	console.log("receiving videos: " + videos)
+	ffmpeg.ffprobe(videos[0].path, (err, metadata) => {
+		console.log(metadata);
 	})
-	console.log(metadata);
 })
