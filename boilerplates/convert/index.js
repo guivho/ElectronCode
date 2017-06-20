@@ -15,8 +15,13 @@ app.on('ready', () => {
 })
 
 ipcMain.on('videos:added', (event, videos) => {
-	console.log("receiving videos: " + videos)
-	ffmpeg.ffprobe(videos[0].path, (err, metadata) => {
-		console.log(metadata);
+	const promise = new Promise((resolve, reject) => {
+		ffmpeg.ffprobe(videos[0].path, (err, metadata) => {
+			resolve(metadata);
+		})
+	})
+
+	promise.then((metadata) => {
+		console.log(metadata.format.duration)
 	})
 })
