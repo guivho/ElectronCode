@@ -16,20 +16,12 @@ app.on('ready', () => {
 })
 
 ipcMain.on('videos:added', (event, videos) => {
-	// const promise = new Promise((resolve, reject) => {
-	// 	ffmpeg.ffprobe(videos[0].path, (err, metadata) => {
-	// 		resolve(metadata);
-	// 	})
-	// })
-
-	// promise.then((metadata) => {
-	// 	console.log(metadata.format.duration)
-	// })
 	const promises = _.map(videos, video => {
 		return new Promise((resolve, reject) => {
 			ffmpeg.ffprobe(video.path, (err, metadata) => {
 				video.duration = metadata.format.duration,
 					video.format = 'avi'
+				console.log(video.duration)
 				resolve(video)
 			})
 		})
@@ -40,4 +32,13 @@ ipcMain.on('videos:added', (event, videos) => {
 			mainWindow.webContents.send('metadata:complete', results)
 		})
 
+})
+
+ipcMain.on('conversion:start', (event, videos) => {
+	console.log(event)
+	const video = videos[0]
+	const outputDirectory = video.path.split(video.name)[0]
+	console.log(outputDirectory)
+	// ffmpeg(video.path)
+	// 	.output()
 })
